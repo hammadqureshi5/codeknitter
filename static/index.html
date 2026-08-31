@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Gateway Prototype</title>
+    <!-- Google Fonts for premium typography -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Link external CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">API Prototype</span>
+            <h1>AI Gateway</h1>
+            <p class="subtitle">Interact with the Gemini model through the gateway endpoint.</p>
+        </header>
+
+        <div class="model-selector-group">
+            <label for="modelSelect">Select Model</label>
+            <select id="modelSelect">
+                <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
+                <option value="deepseek-v4-flash">DeepSeek v4 Flash</option>
+                <option value="gpt-4o-mini">GPT-4o Mini</option>
+                <option value="mistral-small-latest">Mistral Small</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <textarea id="promptInput"
+                placeholder="Enter your prompt here... (e.g. Write a python function to check if a number is prime)"></textarea>
+        </div>
+
+        <button id="submitBtn" class="btn">
+            <span>Send Request</span>
+            <div class="spinner" id="btnSpinner"></div>
+        </button>
+
+        <div class="output-card" id="outputCard">
+            <div class="card-title" id="outputHeader">
+                <span>Response</span>
+                <span class="model-tag" id="modelTag">gemini-3.6-flash</span>
+            </div>
+            <div class="output-text" id="outputText"></div>
+            <div class="meta-section" id="metaSection" style="display: none;">
+                <div class="meta-item"><span>Request ID</span><span id="reqId">-</span></div>
+                <div class="meta-item"><span>Provider</span><span id="providerTag">-</span></div>
+                <div class="meta-item"><span>Tokens</span><span id="tokenUsage">-</span></div>
+                <div class="meta-item"><span>Cost</span><span id="costTag">-</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link external Javascript file -->
+    <script src="script.js"></script>
+</body>
+
+</html>
