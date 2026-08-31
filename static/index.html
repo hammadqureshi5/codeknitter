@@ -3,61 +3,188 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Gateway Prototype</title>
-    <!-- Google Fonts for premium typography -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap"
-        rel="stylesheet">
-    <!-- Link external CSS stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <title>AI Gateway</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select,
+        textarea,
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f4f4f4;
+            white-space: pre-wrap;
+            border-radius: 8px;
+        }
+
+        .loading {
+            color: #666;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <span class="badge">API Prototype</span>
-            <h1>AI Gateway</h1>
-            <p class="subtitle">Interact with the Gemini model through the gateway endpoint.</p>
-        </header>
 
-        <div class="model-selector-group">
-            <label for="modelSelect">Select Model</label>
-            <select id="modelSelect">
-                <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
-                <option value="deepseek-v4-flash">DeepSeek v4 Flash</option>
-                <option value="gpt-4o-mini">GPT-4o Mini</option>
-                <option value="mistral-small-latest">Mistral Small</option>
-            </select>
-        </div>
+    <h1>🚀 AI Gateway Prototype</h1>
 
-        <div class="input-group">
-            <textarea id="promptInput"
-                placeholder="Enter your prompt here... (e.g. Write a python function to check if a number is prime)"></textarea>
-        </div>
+    <label for="model">Select Model</label>
 
-        <button id="submitBtn" class="btn">
-            <span>Send Request</span>
-            <div class="spinner" id="btnSpinner"></div>
-        </button>
+    <select id="model">
 
-        <div class="output-card" id="outputCard">
-            <div class="card-title" id="outputHeader">
-                <span>Response</span>
-                <span class="model-tag" id="modelTag">gemini-3.6-flash</span>
-            </div>
-            <div class="output-text" id="outputText"></div>
-            <div class="meta-section" id="metaSection" style="display: none;">
-                <div class="meta-item"><span>Request ID</span><span id="reqId">-</span></div>
-                <div class="meta-item"><span>Provider</span><span id="providerTag">-</span></div>
-                <div class="meta-item"><span>Tokens</span><span id="tokenUsage">-</span></div>
-                <div class="meta-item"><span>Cost</span><span id="costTag">-</span></div>
-            </div>
-        </div>
+        <option value="gemini-3.7-flash">
+            Gemini
+        </option>
+
+        <option value="gpt-4o-mini">
+            OpenAI
+        </option>
+
+        <option value="deepseek-chat">
+            DeepSeek
+        </option>
+
+        <option value="mistral-large-latest">
+            Mistral
+        </option>
+
+    </select>
+
+
+    <label for="prompt">Prompt</label>
+
+    <textarea id="prompt" placeholder="Ask something..."></textarea>
+
+
+    <button onclick="sendRequest()">
+        Send Request
+    </button>
+
+
+    <div id="result">
+        Response will appear here...
     </div>
 
-    <!-- Link external Javascript file -->
-    <script src="script.js"></script>
+
+    <script>
+
+        async function sendRequest() {
+
+            const model =
+                document.getElementById("model").value;
+
+            const prompt =
+                document.getElementById("prompt").value;
+
+            const result =
+                document.getElementById("result");
+
+
+            if (!prompt.trim()) {
+
+                result.textContent =
+                    "Please enter a prompt.";
+
+                return;
+            }
+
+
+            result.textContent =
+                "⏳ Sending request...";
+
+
+            try {
+
+                const response = await fetch("/chat", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        model: model,
+                        prompt: prompt
+
+                    })
+
+                });
+
+
+                const data = await response.json();
+
+
+                if (!response.ok) {
+
+                    result.textContent =
+                        "❌ Error:\n" +
+                        JSON.stringify(data, null, 2);
+
+                    return;
+                }
+
+
+                result.textContent =
+                    "Provider: " +
+                    data.provider +
+                    "\n\n" +
+
+                    "Model: " +
+                    data.model +
+                    "\n\n" +
+
+                    "Response:\n" +
+                    data.response;
+
+            }
+
+            catch (error) {
+
+                result.textContent =
+                    "❌ Request failed:\n" +
+                    error.message;
+
+            }
+
+        }
+
+    </script>
+
 </body>
 
 </html>
