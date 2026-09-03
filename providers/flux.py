@@ -18,11 +18,12 @@ class FluxProvider:
             if isinstance(images, str):
                 images = [images]
             
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
             for i, img_item in enumerate(images):
                 if isinstance(img_item, str) and (img_item.startswith("http://") or img_item.startswith("https://")):
-                    img_resp = requests.get(img_item)
+                    img_resp = requests.get(img_item, headers=headers, timeout=10)
                     if img_resp.status_code == 200:
-                        content_type = img_resp.headers.get("Content-Type", "image/jpeg")
+                        content_type = img_resp.headers.get("Content-Type", "image/jpeg").split(";")[0]
                         files.append(("images", (f"image_{i}.jpg", img_resp.content, content_type)))
                 elif isinstance(img_item, tuple):
                     files.append(("images", img_item))
