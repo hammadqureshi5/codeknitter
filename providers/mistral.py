@@ -20,7 +20,7 @@ class MistralProvider:
             base_url="https://api.mistral.ai/v1"
         )
 
-    async def generate(self, model: str, prompt: str):
+    async def generate(self, model: str, prompt: str, **kwargs):
 
         response = self.client.chat.completions.create(
             model=model,

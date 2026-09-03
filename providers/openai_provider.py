@@ -17,7 +17,7 @@ class OpenAIProvider:
 
         self.client = OpenAI(api_key=api_key)
 
-    async def generate(self, model: str, prompt: str):
+    async def generate(self, model: str, prompt: str, **kwargs):
 
         response = self.client.chat.completions.create(
             model=model,

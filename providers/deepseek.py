@@ -20,7 +20,7 @@ class DeepSeekProvider:
             base_url="https://api.deepseek.com"
         )
 
-    async def generate(self, model: str, prompt: str):
+    async def generate(self, model: str, prompt: str, **kwargs):
 
         response = self.client.chat.completions.create(
             model=model,

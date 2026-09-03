@@ -17,7 +17,7 @@ class GeminiProvider:
 
         self.client = genai.Client(api_key=api_key)
 
-    async def generate(self, model: str, prompt: str):
+    async def generate(self, model: str, prompt: str, **kwargs):
 
         response = self.client.models.generate_content(
             model=model,
