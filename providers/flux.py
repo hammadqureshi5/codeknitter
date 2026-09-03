@@ -43,3 +43,10 @@ class FluxProvider:
             "provider": "flux",
             "model": model
         }
+
+    async def check_status(self, job_id: str):
+        status_url = f"http://35.224.54.129:5000/status/{job_id}"
+        response = requests.get(status_url)
+        if response.status_code != 200:
+            raise Exception(f"Flux Status Error ({response.status_code}): {response.text}")
+        return response.json()

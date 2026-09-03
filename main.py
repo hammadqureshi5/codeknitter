@@ -145,3 +145,15 @@ async def chat(
 
         )
 
+
+@app.get("/flux/status/{job_id}")
+async def flux_status(
+    job_id: str,
+    product = Depends(authenticate_product)
+):
+    try:
+        flux_provider = provider_router.get_provider("flux")
+        return await flux_provider.check_status(job_id)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Status Error: {str(e)}")
+
